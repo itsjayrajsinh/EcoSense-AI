@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Energy & Water | EcoSense AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- PAGE-ONLY FIXES -->
+  <style>
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header,
+    .footer {
+      flex-shrink: 0;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .energy-card {
+  width: 100%;
+  max-width: 420px;
+  z-index: 3;
+  backdrop-filter: blur(6px);
+
+  transform: translateY(-120px); /* moves card UP */
+}
+
+  </style>
+</head>
+
+<body>
+
+<!-- BACKGROUND ENERGY SCENE -->
+<svg class="energy-scene" viewBox="0 0 1400 800" preserveAspectRatio="xMidYMid slice">
+
+  <!-- POWER POLES (RIGHT) -->
+  <g class="power-poles">
+    <line x1="1180" y1="240" x2="1180" y2="620"/>
+    <line x1="1220" y1="240" x2="1220" y2="620"/>
+  </g>
+
+  <!-- HOUSES (LEFT) -->
+  <g class="energy-houses" transform="scale(1.4) translate(-220, -280)">
+    <path
+      d="
+        M300 600 L340 560 L380 600
+        M320 600 V640 H360 V600
+
+        M400 600 L440 560 L480 600
+        M420 600 V640 H460 V600
+      "
+    />
+  </g>
+
+  <!-- POWER LINE (DECORATIVE, ABOVE CARD) -->
+  <g class="power-line-group" transform="translate(10, -120)">
+
+    <!-- Main curve -->
+    <path
+      d="M1180 360 C900 260, 520 260, 160 300"
+      class="wire-base"
+    />
+    <path
+      d="M1180 360 C900 260, 520 260, 160 300"
+      class="wire-energy-horizontal"
+    />
+
+  <!-- Vertical drop (grouped) -->
+<g class="vertical-drop" transform="translate(5, 250)">
+
+  <path
+    d="M153 260 L155 50"
+    class="wire-base"
+  />
+
+  <path
+    d="M153 260 L155 50"
+    class="wire-energy-vertical"
+  />
+
+</g>
+
+  </g>
+  <!-- Vertical drop (grouped) -->
+<g class="vertical-drop" transform="translate(155,130)">
+
+  <path
+    d="M153 260 L155 38"
+    class="wire-base"
+  />
+
+  <path
+    d="M153 260 L155 38"
+    class="wire-energy-vertical"
+  />
+
+</g>
+
+</svg>
+
+<!-- HEADER -->
+<header class="header">
+  <a href="index.html" class="logo">
+    <span class="logo-icon">⚡</span>
+    <span>EcoSense AI</span>
+  </a>
+</header>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <section class="energy-card">
+
+    <div class="energy-card-header">
+      <div class="energy-icon">⚡💧</div>
+      <h2>Monthly Usage</h2>
+      <p>Enter your household details</p>
+    </div>
+
+    <div class="energy-fields">
+
+      <div class="field">
+        <label for="electricity">Electricity Usage</label>
+        <input type="number" id="electricity" placeholder="Units (kWh)">
+      </div>
+
+      <div class="field">
+        <label for="water">Water Usage</label>
+        <input type="number" id="water" placeholder="Litres per month">
+      </div>
+
+      <div class="field">
+        <label for="people">People in House</label>
+        <input type="number" id="people" placeholder="Number of people">
+      </div>
+
+    </div>
+
+    <button class="btn energy-btn" onclick="checkUsage()">
+      Analyze Usage
+    </button>
+
+    <div class="usage-result">
+      <div class="usage-status" id="usageStatus">
+        Enter details to see your usage status
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  EcoSense AI • Smart energy, smart living
+</footer>
+
+<script>
+function checkUsage() {
+  const electricity = Number(document.getElementById("electricity").value);
+  const water = Number(document.getElementById("water").value);
+  const people = Number(document.getElementById("people").value);
+
+  const result = document.getElementById("usageStatus");
+
+  if (!electricity || !water || !people) {
+    result.textContent = "Please fill all fields.";
+    result.style.color = "#facc15";
+    return;
+  }
+
+  const elecPerPerson = electricity / people;
+  const waterPerPerson = water / people;
+
+  if (elecPerPerson < 50 && waterPerPerson < 2500) {
+    result.textContent = "Excellent! Your usage is efficient 🌱";
+    result.style.color = "#4ade80";
+  } else if (elecPerPerson < 80 && waterPerPerson < 4000) {
+    result.textContent = "Moderate usage. You can still save more 💡";
+    result.style.color = "#facc15";
+  } else {
+    result.textContent = "High usage! Consider reducing consumption 🚰";
+    result.style.color = "#ef4444";
+  }
+}
+</script>
+
+</body>
+</html>

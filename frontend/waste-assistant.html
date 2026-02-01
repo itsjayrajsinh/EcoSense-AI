@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Waste Management | EcoSense AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- PAGE-ONLY STYLES -->
+  <style>
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    /* CARD */
+    .waste-card {
+      width: 100%;
+      max-width: 420px;
+      padding: 2.5rem;
+
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+
+      text-align: center;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+
+      transform: translateY(-40px);
+    }
+
+    /* ICON */
+    .waste-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 1rem;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 2rem;
+      border-radius: 50%;
+
+      background: radial-gradient(
+        circle at top left,
+        rgba(74,222,128,0.95),
+        rgba(34,197,94,0.95)
+      );
+
+      box-shadow:
+        0 0 14px rgba(74,222,128,0.6),
+        inset 0 0 6px rgba(255,255,255,0.3);
+    }
+
+    .waste-card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.4rem;
+      color: var(--green);
+    }
+
+    .waste-card p {
+      font-size: 0.95rem;
+      color: var(--text-soft);
+      margin-bottom: 1.6rem;
+    }
+
+    /* INPUT */
+    .waste-card input {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(0,0,0,0.35);
+      color: var(--text-main);
+      font-size: 1rem;
+      outline: none;
+    }
+
+    .waste-card input::placeholder {
+      color: #6b7280;
+    }
+
+    /* RESULT */
+    .waste-result {
+      margin-top: 1.6rem;
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* =========================
+       WASTE BINS
+       ========================= */
+
+    .bins {
+      margin-top: 2rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.8rem;
+    }
+
+    .bin {
+      padding: 1rem 0.6rem;
+      border-radius: 14px;
+      font-size: 1.4rem;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+
+      opacity: 0.35;
+      transition: all 0.25s ease;
+    }
+
+    .bin span {
+      font-size: 0.75rem;
+      color: var(--text-soft);
+    }
+
+    .bin.active {
+      opacity: 1;
+      transform: translateY(-4px);
+    }
+
+    .bin.recycle.active {
+      background: rgba(74,222,128,0.15);
+      border-color: rgba(74,222,128,0.5);
+      box-shadow: 0 0 20px rgba(74,222,128,0.6);
+    }
+
+    .bin.wet.active {
+      background: rgba(34,197,94,0.15);
+      border-color: rgba(34,197,94,0.5);
+      box-shadow: 0 0 20px rgba(34,197,94,0.6);
+    }
+
+    .bin.dry.active {
+      background: rgba(229,231,235,0.15);
+      border-color: rgba(229,231,235,0.4);
+      box-shadow: 0 0 20px rgba(229,231,235,0.5);
+    }
+
+    .bin.hazardous.active {
+      background: rgba(239,68,68,0.15);
+      border-color: rgba(239,68,68,0.5);
+      box-shadow: 0 0 20px rgba(239,68,68,0.6);
+    }
+	
+/* =========================
+   BACKGROUND WASTE SCENE
+   ========================= */
+
+.waste-scene {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+path.bg-bin {
+  fill: none;
+  stroke-width: 3;
+  stroke-linejoin: round;
+  opacity: 0.4;
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+/* ACTIVE */
+path.bg-bin.active {
+  opacity: 1;
+}
+
+/* GREEN – Recyclable */
+path.bg-bin.recycle {
+  stroke: #4ade80;
+}
+path.bg-bin.recycle.active {
+  filter:
+    drop-shadow(0 0 16px rgba(74,222,128,0.9))
+    drop-shadow(0 0 36px rgba(74,222,128,0.7));
+}
+
+/* BLUE – Wet Waste */
+path.bg-bin.wet {
+  stroke: #60a5fa;
+}
+path.bg-bin.wet.active {
+  filter:
+    drop-shadow(0 0 16px rgba(96,165,250,0.9))
+    drop-shadow(0 0 36px rgba(96,165,250,0.7));
+}
+
+/* YELLOW – Dry Waste */
+path.bg-bin.dry {
+  stroke: #facc15;
+}
+path.bg-bin.dry.active {
+  filter:
+    drop-shadow(0 0 16px rgba(250,204,21,0.9))
+    drop-shadow(0 0 36px rgba(250,204,21,0.7));
+}
+
+/* RED – Hazardous */
+path.bg-bin.hazardous {
+  stroke: #ef4444;
+}
+path.bg-bin.hazardous.active {
+  filter:
+    drop-shadow(0 0 16px rgba(239,68,68,0.9))
+    drop-shadow(0 0 36px rgba(239,68,68,0.7));
+}
+
+  </style>
+</head>
+
+<body>
+<!-- BACKGROUND DUSTBINS (DECORATIVE ONLY) -->
+<svg class="waste-scene" viewBox="0 0 1400 800" preserveAspectRatio="xMidYMid slice">
+
+  <!-- LEFT SIDE BACKGROUND BINS -->
+  <g transform="translate(80, 340) scale(1.6)">
+    <!-- Recyclable -->
+    <path
+      d="M0 0 L60 0 L54 100 H6 Z M15 -14 H45"
+      class="bg-bin recycle"
+      id="bg-bin-recycle"
+    />
+    <!-- Wet -->
+    <path
+      d="M120 0 L180 0 L174 100 H126 Z M135 -14 H165"
+      class="bg-bin wet"
+      id="bg-bin-wet"
+    />
+  </g>
+
+  <!-- RIGHT SIDE BACKGROUND BINS -->
+  <g transform="translate(960, 340) scale(1.6)">
+    <!-- Dry -->
+    <path
+      d="M0 0 L60 0 L54 100 H6 Z M15 -14 H45"
+      class="bg-bin dry"
+      id="bg-bin-dry"
+    />
+    <!-- Hazardous -->
+    <path
+      d="M120 0 L180 0 L174 100 H126 Z M135 -14 H165"
+      class="bg-bin hazardous"
+      id="bg-bin-hazardous"
+    />
+  </g>
+
+</svg>
+
+
+<!-- HEADER -->
+<header class="header">
+  <a href="index.html" class="logo">
+    <span class="logo-icon">♻️</span>
+    <span>EcoSense AI</span>
+  </a>
+</header>
+
+<!-- MAIN -->
+<main class="main">
+  <section class="waste-card">
+
+    <div class="waste-icon">♻️</div>
+
+    <h2>Waste Assistant</h2>
+    <p>Find the correct way to dispose waste</p>
+
+    <input
+      type="text"
+      id="wasteItem"
+      placeholder="e.g. plastic bottle, banana peel"
+    >
+
+    <button class="btn" onclick="classifyWaste()">
+      Classify Waste
+    </button>
+
+    <div class="waste-result" id="wasteResult">
+      Enter an item to see disposal guidance
+    </div>
+
+    <!-- BINS -->
+    <div class="bins">
+      <div class="bin recycle" id="bin-recycle">♻️<span>Recyclable</span></div>
+      <div class="bin wet" id="bin-wet">🌱<span>Wet Waste</span></div>
+      <div class="bin dry" id="bin-dry">🗑️<span>Dry Waste</span></div>
+      <div class="bin hazardous" id="bin-hazardous">☠️<span>Hazardous</span></div>
+    </div>
+
+  </section>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  EcoSense AI • Reduce, Reuse, Recycle
+</footer>
+
+<script>
+function classifyWaste() {
+  const item = document.getElementById("wasteItem").value.toLowerCase();
+  const result = document.getElementById("wasteResult");
+
+  document.querySelectorAll(".bin").forEach(bin =>
+    bin.classList.remove("active")
+  );
+
+  if (!item) {
+    result.textContent = "Please enter a waste item.";
+    result.style.color = "#facc15";
+    return;
+  }
+
+  if (item.includes("plastic") || item.includes("bottle") || item.includes("paper")) {
+    result.textContent = "Recyclable ♻️ – Put it in the recycling bin.";
+    result.style.color = "#4ade80";
+    document.getElementById("bin-recycle").classList.add("active");
+  }
+  else if (item.includes("food") || item.includes("banana") || item.includes("vegetable")) {
+    result.textContent = "Wet waste 🌱 – Compost it if possible.";
+    result.style.color = "#22c55e";
+    document.getElementById("bin-wet").classList.add("active");
+  }
+  else if (item.includes("battery") || item.includes("chemical") || item.includes("medicine")) {
+    result.textContent = "Hazardous ☠️ – Dispose at a special facility.";
+    result.style.color = "#ef4444";
+    document.getElementById("bin-hazardous").classList.add("active");
+  }
+  else {
+    result.textContent = "Dry waste 🗑️ – Dispose responsibly.";
+    result.style.color = "#e5e7eb";
+    document.getElementById("bin-dry").classList.add("active");
+  }
+}
+</script>
+
+</body>
+</html>

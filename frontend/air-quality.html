@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Air Quality | EcoSense AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* PAGE SCENE */
+    .aqi-scene {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.95;
+    }
+
+    .mountains {
+      fill: none;
+      stroke: var(--blue);
+      stroke-width: 2.4;
+      filter: drop-shadow(0 0 6px rgba(96,165,250,0.45));
+    }
+
+    .houses {
+      fill: none;
+      stroke: #e5e7eb; /* brighter for visibility */
+      stroke-width: 2.4;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 0 6px rgba(229,231,235,0.5));
+    }
+
+    .air-flow {
+  fill: none;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+
+  /* smooth flowing air */
+  stroke-dasharray: 60 40;
+  animation: airMove 10s linear infinite;
+
+  filter: drop-shadow(0 0 6px rgba(255,255,255,0.45));
+  opacity: 0.7;
+}
+
+    @keyframes airMove {
+      from { stroke-dashoffset: 0; }
+      to { stroke-dashoffset: -220; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- BACKGROUND SCENE -->
+<svg class="aqi-scene" viewBox="0 0 1400 800" preserveAspectRatio="xMidYMid slice">
+
+  <defs>
+    <linearGradient id="airGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop id="airStart" offset="0%" stop-color="#4ade80"/>
+      <stop id="airEnd" offset="100%" stop-color="#4ade80"/>
+    </linearGradient>
+  </defs>
+
+  <!-- MOUNTAINS -->
+  <g transform="translate(0, -80)">
+  <path
+    d="
+    M880 620
+    C940 520, 1000 480, 1060 490
+    C1120 490, 1180 540, 1240 620
+    "
+    class="mountains"
+  />
+</g>
+
+
+  <!-- HOUSES (CLEAR & BIGGER) -->
+<!-- HOUSES (MOVED LEFT & UP FOR CENTER BALANCE) -->
+<g transform="scale(1.7) translate(-510, -380)">
+  <path
+    d="
+    M520 600
+    L560 560 L600 600
+    M540 600 V640 H580 V600
+
+    M620 600
+    L660 560 L700 600
+    M640 600 V640 H680 V600
+
+    M720 600
+    L760 560 L800 600
+    M740 600 V640 H780 V600
+    "
+    class="houses"
+  />
+</g>
+
+
+
+  <!-- AIR FLOW (MOUNTAINS → HOUSES) -->
+  <!-- AIR FLOW (LONG, WAVY BREEZE FROM MOUNTAINS → HOUSES) -->
+<!-- AIR FLOW (MOVED UP) -->
+<g transform="translate(100, -50)">
+  <path
+    d="M980 260
+       C860 240, 740 300, 620 340
+       C540 360, 460 350, 380 330"
+    class="air-flow"
+    stroke="url(#airGradient)"
+  />
+
+  <path
+    d="M1020 320
+       C900 300, 780 360, 650 400
+       C560 430, 470 420, 400 400"
+    class="air-flow"
+    stroke="url(#airGradient)"
+  />
+</g>
+
+</svg>
+
+<header class="header">
+  <a href="index.html" class="logo">
+    <span class="logo-icon">🍃️</span>
+    <span>EcoSense AI</span>
+  </a>
+</header>
+
+
+
+<main class="main">
+
+  <section class="page-header">
+    <h1>Air Quality</h1>
+    <p>Visualize how air quality affects your neighborhood.</p>
+  </section>
+
+  <section class="aqi-card">
+    <input id="city" type="text" placeholder="Enter city name">
+    <button class="btn" onclick="checkAQI()">🌬️ Check Air Quality</button>
+
+
+    <div class="aqi-result">
+      <div class="aqi-value" id="aqiValue">AQI: --</div>
+      <div class="aqi-status" id="aqiStatus">Status will appear here</div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  EcoSense AI • Clean air awareness
+</footer>
+
+<script>
+function checkAQI() {
+  // Demo AQI value (we'll replace with real API later)
+  const aqi = Math.floor(Math.random() * 300) + 1;
+
+  const valueEl = document.getElementById("aqiValue");
+  const statusEl = document.getElementById("aqiStatus");
+
+  const airStart = document.getElementById("airStart");
+  const airEnd = document.getElementById("airEnd");
+
+  // Reset old color classes
+  valueEl.className = "aqi-value";
+  statusEl.className = "aqi-status";
+
+  valueEl.textContent = "AQI: " + aqi;
+
+  if (aqi <= 50) {
+    statusEl.textContent = "Good – Clean Air";
+
+    valueEl.classList.add("aqi-good");
+    statusEl.classList.add("aqi-good");
+
+    airStart.setAttribute("stop-color", "#4ade80");
+    airEnd.setAttribute("stop-color", "#4ade80");
+  }
+  else if (aqi <= 100) {
+    statusEl.textContent = "Moderate – Acceptable Air";
+
+    valueEl.classList.add("aqi-moderate");
+    statusEl.classList.add("aqi-moderate");
+
+    airStart.setAttribute("stop-color", "#facc15");
+    airEnd.setAttribute("stop-color", "#fde047");
+  }
+  else {
+    statusEl.textContent = "Poor – Unhealthy Air";
+
+    valueEl.classList.add("aqi-poor");
+    statusEl.classList.add("aqi-poor");
+
+    airStart.setAttribute("stop-color", "#ef4444");
+    airEnd.setAttribute("stop-color", "#f87171");
+  }
+}
+</script>
+
+
+</body>
+</html>

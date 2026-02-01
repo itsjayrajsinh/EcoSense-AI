@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EcoSense AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- BACKGROUND SCENE -->
+<svg class="scene" viewBox="0 0 1400 800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="breezeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#60a5fa"/>
+      <stop offset="100%" stop-color="#f1f5f9"/>
+    </linearGradient>
+  </defs>
+
+  <!-- TREE CANOPY -->
+  <path
+    d="
+    M200 300
+    C140 260, 140 200, 220 200
+    C240 160, 300 150, 330 180
+    C380 150, 460 170, 460 220
+    C520 220, 540 270, 500 310
+    C520 360, 460 390, 420 370
+    C400 410, 320 410, 300 370
+    C250 390, 200 360, 220 320
+    Z
+    "
+    class="tree-leaves"
+  />
+
+  <!-- TREE TRUNK -->
+  <path
+    d="
+    M330 370
+    C330 460, 330 540, 330 650
+    M330 430 L280 370
+    M330 430 L380 370
+    "
+    class="tree-trunk"
+  />
+
+  <!-- MOUNTAINS -->
+  <path
+    d="
+    M880 700
+    C910 620, 960 560, 1020 560
+    C1080 560, 1120 620, 1160 700
+
+    M1020 700
+    C1050 640, 1100 600, 1160 600
+    C1220 600, 1260 640, 1300 700
+    "
+    class="mountains"
+  />
+
+  <!-- BREEZE -->
+  <path d="M420 220 C620 200, 820 220, 1040 210" class="breeze"/>
+  <path d="M450 260 C650 240, 850 260, 1080 250" class="breeze"/>
+</svg>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="logo">
+  <span class="logo-icon">🌱</span>
+  <span>EcoSense AI</span>
+</div>
+
+</header>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+  <section class="hero">
+    <h1>EcoSense AI</h1>
+    <p>
+      A calm, intelligent way to understand your environment  
+      and live healthier every day.
+    </p>
+  </section>
+
+  <section class="features">
+    <a href="air-quality.html" class="card">
+      <div class="icon">🍃</div>
+      <h3>Air Quality</h3>
+      <p>Know if the air is safe today.</p>
+    </a>
+
+    <a href="energy-water.html" class="card">
+      <div class="icon">⚡</div>
+      <h3>Energy & Water</h3>
+      <p>Reduce daily consumption easily.</p>
+    </a>
+
+    <a href="waste-assistant.html" class="card">
+      <div class="icon">♻️</div>
+      <h3>Waste Assistant</h3>
+      <p>Dispose items the right way.</p>
+    </a>
+  </section>
+</main>
+
+<footer class="footer">
+  Designed for everyday citizens
+</footer>
+
+</body>
+</html>
